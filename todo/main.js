@@ -1,124 +1,131 @@
 (function () {
-    const todo = document.querySelector(".todo");
+    function createAppTitle(text) {
+        const title = document.createElement("h1");
+        title.classList = "apptitle";
+        title.setAttribute("id", "title");
+        title.textContent = text;
 
-    // Заголовок
-    function createAppTitle() {
+        return title;
+    }
 
-        const titleDiv = document.createElement("div");
-        titleDiv.classList = "apptitle";
-        titleDiv.setAttribute("id", "title")
-        todo.appendChild(titleDiv);
-
-
-        const h1 = document.createElement("h1");
-        h1.textContent = "Список дел";
-        titleDiv.appendChild(h1);
-
-    };
-
-
-    // Форма для создания дела
     function createTodoItemForm() {
-
-        // div
         const divItems = document.createElement("div");
         divItems.classList = "todoitemform";
         divItems.setAttribute("id", "createform");
-        todo.appendChild(divItems);
 
-        // form
         const form = document.createElement("form");
         form.classList = "form";
-        divItems.appendChild(form);
+        divItems.append(form);
 
-        // input
         const input = document.createElement("input");
         input.setAttribute("placeholder", "Введите новое дело");
         input.classList = "inp";
-        input.setAttribute("id", "input1")
-        form.appendChild(input);
+        input.setAttribute("id", "input1");
+        form.append(input);
 
-        // button
-        const button = document.createElement("button");
-        button.setAttribute("type", "button");
-        button.classList = "inputbutton";
-        button.innerHTML = "Добавить";
-        form.appendChild(button);
+        const buttonDone = document.createElement("button");
+        buttonDone.setAttribute("type", "button");
+        buttonDone.classList = "inputbutton";
+        buttonDone.innerHTML = "Добавить";
+        form.append(buttonDone);
 
-        button.addEventListener("click", createTodoElement);
-    };
+        return {
+            divItems,
+            form,
+            input,
+            buttonDone
+        }
+    }
 
-
-    // создание списка элементов
     function createTodoList() {
         const ul = document.createElement("ul");
         ul.setAttribute("id", "todolist");
         ul.classList = "list";
-        todo.appendChild(ul);
-    };
 
-
-    // Создание элемента списка
-    function createTodoElement() {
-        const list = document.querySelector(".list");
-        const input = document.querySelector(".inp");
-
-        if (input.value != "") {
-            // создание элемента списка
-            const li = document.createElement("li");
-            li.setAttribute("id", "li");
-            list.appendChild(li);
-
-            const div = document.createElement("div");
-            div.classList = "liDiv";
-            li.appendChild(div);
-
-            let text1 = document.createElement("p");
-            text1.classList = "liText";
-            text1.textContent = input.value;
-            div.appendChild(text1);
-
-            const buttonDiv = document.createElement("div");
-            buttonDiv.classList = "liButtons";
-            div.appendChild(buttonDiv)
-
-            const buttonReady = document.createElement("button");
-            buttonReady.textContent = "Готово";
-            buttonReady.classList = "liReadyButton";
-            buttonDiv.appendChild(buttonReady);
-            buttonReady.addEventListener("click", () => {
-                if (li.style.backgroundColor == "rgb(102, 212, 85)") {
-                    li.style.backgroundColor = "";
-                    li.style.textDecoration = "";
-                } else {
-                    li.style.backgroundColor = "rgb(102, 212, 85)";
-                    li.style.textDecoration = "line-through";
-                }
-
-
-            });
-
-            const buttonDel = document.createElement("button");
-            buttonDel.textContent = "Удалить";
-            buttonDel.classList = "liReadyButton";
-            buttonDiv.appendChild(buttonDel);
-            buttonDel.addEventListener("click", () => {
-                let conf = confirm("Вы действительно хотите удалить эту задачу?");
-                if (conf) {
-                    li.remove();
-                }
-            });
-
-        }
-        else {
-            alert("Поле ввода не может быть пустым!");
-        }
-
-
-        input.value = "";
+        return ul;
     }
 
-    createAppTitle();
-    createTodoItemForm();
-    createTodoList();
+    function createTodoElement(textContent) {
+        const li = document.createElement("li");
+        li.setAttribute("id", "li");
+
+        const div = document.createElement("div");
+        div.classList = "liDiv";
+        li.append(div);
+
+        let text = document.createElement("p");
+        text.classList = "liText";
+        text.textContent = textContent;
+        div.append(text);
+
+        const buttonDiv = document.createElement("div");
+        buttonDiv.classList = "liButtons";
+        div.append(buttonDiv);
+
+        const buttonReady = document.createElement("button");
+        buttonReady.textContent = "Готово";
+        buttonReady.classList = "liReadyButton";
+        buttonDiv.append(buttonReady);
+
+        const buttonDel = document.createElement("button");
+        buttonDel.textContent = "Удалить";
+        buttonDel.classList = "liReadyButton";
+        buttonDiv.append(buttonDel);
+
+        return {
+            li,
+            text,
+            buttonReady,
+            buttonDel
+        }
+
+    }
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const todo = document.querySelector(".todo");
+
+        let title = createAppTitle("Список дел");
+        todo.append(title);
+
+        let itemForm = createTodoItemForm();
+        todo.append(itemForm.divItems);
+
+        let ul = createTodoList();
+        todo.append(ul);
+
+        itemForm.buttonDone.addEventListener("click", () => {
+            if (itemForm.input.value != "") {
+                let list = createTodoElement(itemForm.input.value);
+                list.buttonReady.addEventListener("click", () => {
+                    if (list.li.style.backgroundColor == "rgb(102, 212, 85)") {
+                        list.li.style.backgroundColor = "";
+                        list.li.style.textDecoration = "";
+                    } else {
+                        list.li.style.backgroundColor = "rgb(102, 212, 85)";
+                        list.li.style.textDecoration = "line-through";
+                    }
+                })
+
+                list.buttonDel.addEventListener("click", () => {
+                    let conf = confirm("Вы действительно хотите удалить эту задачу?");
+                    if (conf) {
+                        list.li.remove();
+                    }
+                })
+
+                ul.append(list.li);
+            }
+            else {
+                alert("Поле ввода не может быть пустым!");
+            }
+
+            itemForm.input.value = "";
+        })
+    })
+
+
+
+
+
 })();
