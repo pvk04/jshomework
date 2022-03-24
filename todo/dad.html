@@ -13,20 +13,23 @@
 
 <body>
     <header>
-        <ul>
-            <li>
-                <a href="index.html">Мой список дел</a>
-            </li>
+        <nav>
+            <ul>
+                <li>
+                    <a href="index.html">Мой список дел</a>
+                </li>
 
-            <li>
-                <a href="mama.html">Список дел Мамы</a>
-            </li>
-        </ul>
+                <li>
+                    <a href="mama.html">Список дел мамы</a>
+                </li>
+            </ul>
+        </nav>
     </header>
 
     <div class="todo" id="todo" class="todo"></div>
 
-    <script src="main.js"></script>
+    <script src="main ready.js"></script>
+    <script>document.addEventListener("DOMContentLoaded", createTodo("Папин список дел"));</script>
 </body>
 
 </html>
