@@ -92,6 +92,15 @@
   
         let ul = createTodoList();
         todo.append(ul);
+
+        // buttonDone disable
+        itemForm.buttonDone.setAttribute("disabled", "disabled");
+        itemForm.input.addEventListener("input", () => {
+            itemForm.buttonDone.removeAttribute("disabled");
+            if (itemForm.input.value == ""){
+                itemForm.buttonDone.setAttribute("disabled", "disabled");
+            }
+        })
   
         itemForm.form.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -115,6 +124,10 @@
                 })
   
                 ul.append(list.li);
+
+
+                //ButtonDone enable
+                itemForm.buttonDone.setAttribute("disabled", "disabled");
             }
             else {
                 alert("Поле ввода не может быть пустым!");
