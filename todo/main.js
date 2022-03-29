@@ -1,4 +1,11 @@
+"use strict";
 (function () {
+
+    let todoArray = [
+        {name: "Помыть посуду", done: true},
+        {name: "Выгулять собаку", done: false}
+    ];
+
     function createAppTitle(text) {
         const title = document.createElement("h1");
         title.classList = "apptitle";
@@ -44,7 +51,7 @@
         return ul;
     }
   
-    function createTodoElement(textContent) {
+    function createTodoElement({name, done}) {
         const li = document.createElement("li");
         li.setAttribute("id", "li");
   
@@ -54,7 +61,7 @@
   
         let text = document.createElement("p");
         text.classList = "liText";
-        text.textContent = textContent;
+        text.textContent = name;
         div.append(text);
   
         const buttonDiv = document.createElement("div");
@@ -70,7 +77,13 @@
         buttonDel.textContent = "Удалить";
         buttonDel.classList = "liReadyButton";
         buttonDiv.append(buttonDel);
-  
+
+        if (done){
+            li.classList.add("item");
+        }
+
+
+
         return {
             li,
             text,
@@ -81,10 +94,17 @@
     }
   
   
-    function createTodo(name) {
+    function createTodo(nameApp, array = [], key) {
+        //
+        array = JSON.parse(localStorage.getItem(key)) || array;
+        localStorage.setItem(key, JSON.stringify(array));
+        //
+
+
+
         const todo = document.querySelector(".todo");
   
-        let title = createAppTitle(name);
+        let title = createAppTitle(nameApp);
         todo.append(title);
   
         let itemForm = createTodoItemForm();
@@ -93,6 +113,7 @@
         let ul = createTodoList();
         todo.append(ul);
 
+
         // buttonDone disable
         itemForm.buttonDone.setAttribute("disabled", "disabled");
         itemForm.input.addEventListener("input", () => {
@@ -100,19 +121,27 @@
             if (itemForm.input.value == ""){
                 itemForm.buttonDone.setAttribute("disabled", "disabled");
             }
-        })
+        });
   
+
         itemForm.form.addEventListener("submit", (e) => {
             e.preventDefault();
+
             if (itemForm.input.value != "") {
-                let list = createTodoElement(itemForm.input.value);
+                let list = createTodoElement({name: itemForm.input.value, done: false});
+
+                //
+                array.push({name: itemForm.input.value, done: false});
+                localStorage.setItem(key, JSON.stringify(array));
+                //
+
+
                 list.buttonReady.addEventListener("click", () => {
                     if (list.li.style.backgroundColor == "rgb(102, 212, 85)") {
-                        list.li.style.backgroundColor = "";
-                        list.li.style.textDecoration = "";
+                        list.li.classList.toggle("item");
+
                     } else {
-                        list.li.style.backgroundColor = "rgb(102, 212, 85)";
-                        list.li.style.textDecoration = "line-through";
+                        list.li.classList.toggle("item");
                     }
                 })
   
@@ -120,9 +149,11 @@
                     let conf = confirm("Вы действительно хотите удалить эту задачу?");
                     if (conf) {
                         list.li.remove();
+
                     }
                 })
-  
+                
+
                 ul.append(list.li);
 
 
@@ -134,10 +165,30 @@
             }
   
             itemForm.input.value = "";
-        })
+        });
+
+        // array reader
+        for (let i = 0; i<array.length; i++){
+            let elem = createTodoElement(array[i]);
+
+            elem.buttonReady.addEventListener("click", () => {
+                if (elem.li.style.backgroundColor == "rgb(102, 212, 85)") {
+                    elem.li.classList.toggle("item");
+                } else {
+                    elem.li.classList.toggle("item");
+                }
+            });
+            elem.buttonDel.addEventListener("click", () => {
+                let conf = confirm("Вы действительно хотите удалить эту задачу?");
+                if (conf) {
+                    elem.li.remove();
+                }
+            });
+            ul.append(elem.li);
+        }
     }
   
   window.createTodo = createTodo;
-  
-  
+  window.todoArray = todoArray;
+
   })();
