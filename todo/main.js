@@ -50,7 +50,7 @@
         return ul;
     }
 
-    function createTodoElement({ id, name, done }) {
+    function createTodoElement({ name, done }) {
         const li = document.createElement("li");
         li.setAttribute("id", "li");
 
@@ -127,32 +127,20 @@
             e.preventDefault();
 
             if (itemForm.input.value != "") {
-                let item = { id: array.length, name: itemForm.input.value, done: false };
+                let item = { name: itemForm.input.value, done: false };
                 let list = createTodoElement(item);
 
-                // localstore array pushing
+                // local storage array pushing
                 array.push(item);
                 localStorage.setItem(key, JSON.stringify(array));
 
 
                 list.buttonReady.addEventListener("click", () => {
                     list.li.classList.toggle("item");
-                    // local store array ready
 
-                    // let newArr = array.filter((arr) => {
-                    //     item.id != arr.id
-                    //     if (item.id == arr.id) {
-                    //         if (arr.done == true) {
-                    //             arr.done = false;
-                    //         }
-                    //         else {
-                    //             arr.done = true;
-                    //         }
-                    //     }
-                    // });
                     let newArr = [];
                     for (let i = 0; i < array.length; i++) {
-                        if (item.id != array[i].id) {
+                        if (item.name != array[i].name) {
                             newArr.push(array[i]);
                         }
                         else {
@@ -171,8 +159,9 @@
                 list.buttonDel.addEventListener("click", () => {
                     let conf = confirm("Вы действительно хотите удалить эту задачу?");
                     if (conf) {
-                        // local store item remove
-                        let newArr = array.filter((arr) => item.id != arr.id);
+                        // local storage item remove
+                        let array = JSON.parse(localStorage.getItem(key));
+                        let newArr = array.filter(arr => item.name != arr.name);
                         localStorage.setItem(key, JSON.stringify(newArr));
 
                         list.li.remove();
@@ -211,9 +200,10 @@
             elem.buttonDel.addEventListener("click", () => {
                 let conf = confirm("Вы действительно хотите удалить эту задачу?");
                 if (conf) {
-                    let newArr = array.filter((arr) => array[i].id != arr.id);
+                    let array = JSON.parse(localStorage.getItem(key));
+                    let newArr = array.filter(arr => array[i].name != arr.name);
+                    console.log(newArr);
                     localStorage.setItem(key, JSON.stringify(newArr));
-
                     elem.li.remove();
                 }
             });
