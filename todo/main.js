@@ -1,9 +1,8 @@
-"use strict";
 (function () {
 
     let todoArray = [
-        {name: "Помыть посуду", done: true},
-        {name: "Выгулять собаку", done: false}
+        {id: 0, name: "Помыть посуду", done: true},
+        {id: 1, name: "Выгулять собаку", done: false}
     ];
 
     function createAppTitle(text) {
@@ -51,7 +50,7 @@
         return ul;
     }
   
-    function createTodoElement({name, done}) {
+    function createTodoElement({id, name, done}) {
         const li = document.createElement("li");
         li.setAttribute("id", "li");
   
@@ -95,7 +94,7 @@
   
   
     function createTodo(nameApp, array = [], key) {
-        
+
         //
         array = JSON.parse(localStorage.getItem(key)) || array;
         localStorage.setItem(key, JSON.stringify(array));
@@ -130,28 +129,32 @@
             if (itemForm.input.value != "") {
                 let list = createTodoElement({name: itemForm.input.value, done: false});
 
-                //
-                array.push({name: itemForm.input.value, done: false});
+                // localstore array pushing
+                let item = {id: array.length, name: itemForm.input.value, done: false};
+                array.push(item);
                 localStorage.setItem(key, JSON.stringify(array));
                 //
 
 
                 list.buttonReady.addEventListener("click", () => {
-                    if (list.li.style.backgroundColor == "rgb(102, 212, 85)") {
-                        list.li.classList.toggle("item");
+                    list.li.classList.toggle("item");
+                    // local store array ready
+                    
 
-                    } else {
-                        list.li.classList.toggle("item");
-                    }
-                })
+                    
+
+                });
   
                 list.buttonDel.addEventListener("click", () => {
                     let conf = confirm("Вы действительно хотите удалить эту задачу?");
                     if (conf) {
-                        list.li.remove();
+                        // local store item remove
+                        newArr = array.filter((arr) => item.id != arr.id);
+                        localStorage.setItem(key, JSON.stringify(newArr));
 
+                        list.li.remove();
                     }
-                })
+                });
                 
 
                 ul.append(list.li);
