@@ -95,11 +95,11 @@
   
   
     function createTodo(nameApp, array = [], key) {
+        
         //
         array = JSON.parse(localStorage.getItem(key)) || array;
         localStorage.setItem(key, JSON.stringify(array));
         //
-
 
 
         const todo = document.querySelector(".todo");
