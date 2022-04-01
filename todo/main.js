@@ -50,7 +50,7 @@
         return ul;
     }
 
-    function createTodoElement({ name, done }) {
+    function createTodoElement({id, name, done }) {
         const li = document.createElement("li");
         li.setAttribute("id", "li");
 
@@ -127,7 +127,7 @@
             e.preventDefault();
 
             if (itemForm.input.value != "") {
-                let item = { name: itemForm.input.value, done: false };
+                let item = {id: array.length,  name: itemForm.input.value, done: false };
                 let list = createTodoElement(item);
 
                 // local storage array pushing
@@ -140,7 +140,7 @@
 
                     let newArr = [];
                     for (let i = 0; i < array.length; i++) {
-                        if (item.name != array[i].name) {
+                        if (item.id != array[i].id) {
                             newArr.push(array[i]);
                         }
                         else {
@@ -161,7 +161,7 @@
                     if (conf) {
                         // local storage item remove
                         let array = JSON.parse(localStorage.getItem(key));
-                        let newArr = array.filter(arr => item.name != arr.name);
+                        let newArr = array.filter(arr => item.id != arr.id);
                         localStorage.setItem(key, JSON.stringify(newArr));
 
                         list.li.remove();
@@ -201,7 +201,7 @@
                 let conf = confirm("Вы действительно хотите удалить эту задачу?");
                 if (conf) {
                     let array = JSON.parse(localStorage.getItem(key));
-                    let newArr = array.filter(arr => array[i].name != arr.name);
+                    let newArr = array.filter(arr => array[i].id != arr.id);
                     console.log(newArr);
                     localStorage.setItem(key, JSON.stringify(newArr));
                     elem.li.remove();
