@@ -18,7 +18,7 @@
     list-style-type: none;
   }
   
-  #li{
+  .li{
     margin: auto;
     width: 75%;
     border: 1px solid black;

@@ -50,9 +50,9 @@
         return ul;
     }
 
-    function createTodoElement({id, name, done }) {
+    function createTodoElement({ name, done }) {
         const li = document.createElement("li");
-        li.setAttribute("id", "li");
+        li.classList.add("li");
 
         const div = document.createElement("div");
         div.classList = "liDiv";
@@ -127,7 +127,7 @@
             e.preventDefault();
 
             if (itemForm.input.value != "") {
-                let item = {id: array.length,  name: itemForm.input.value, done: false };
+                let item = { name: itemForm.input.value, done: false };
                 let list = createTodoElement(item);
 
                 // local storage array pushing
@@ -137,34 +137,14 @@
 
                 list.buttonReady.addEventListener("click", () => {
                     list.li.classList.toggle("item");
-
-                    let newArr = [];
-                    for (let i = 0; i < array.length; i++) {
-                        if (item.id != array[i].id) {
-                            newArr.push(array[i]);
-                        }
-                        else {
-                            if (array[i].done) {
-                                array[i].done = false;
-                            }
-                            else {
-                                array[i].done = true;
-                            }
-                            newArr.push(array[i]);
-                        }
-                    }
-                    localStorage.setItem(key, JSON.stringify(newArr));
+                    changeLocalStorage(key);
                 });
 
                 list.buttonDel.addEventListener("click", () => {
                     let conf = confirm("Вы действительно хотите удалить эту задачу?");
                     if (conf) {
-                        // local storage item remove
-                        let array = JSON.parse(localStorage.getItem(key));
-                        let newArr = array.filter(arr => item.id != arr.id);
-                        localStorage.setItem(key, JSON.stringify(newArr));
-
                         list.li.remove();
+                        changeLocalStorage(key);
                     }
                 });
 
@@ -188,27 +168,32 @@
 
             elem.buttonReady.addEventListener("click", () => {
                 elem.li.classList.toggle("item");
-
-                if (array[i].done) {
-                    array[i].done = false;
-                }
-                else {
-                    array[i].done = true;
-                }
-                localStorage.setItem(key, JSON.stringify(array));
+                changeLocalStorage(key);
             });
             elem.buttonDel.addEventListener("click", () => {
                 let conf = confirm("Вы действительно хотите удалить эту задачу?");
                 if (conf) {
-                    let array = JSON.parse(localStorage.getItem(key));
-                    let newArr = array.filter(arr => array[i].id != arr.id);
-                    console.log(newArr);
-                    localStorage.setItem(key, JSON.stringify(newArr));
                     elem.li.remove();
+                    changeLocalStorage(key);
                 }
             });
             ul.append(elem.li);
         }
+    }
+
+    function changeLocalStorage(key) {
+        let newArr = [];
+        let lis = document.querySelectorAll(".li")
+        for (let i = 0; i < lis.length; i++) {
+            let p = lis[i].querySelector(".liText");
+            if (lis[i].className == "li item") {
+                newArr.push({ name: p.innerHTML, done: true });
+            }
+            else {
+                newArr.push({ name: p.innerHTML, done: false });
+            }
+        }
+        localStorage.setItem(key, JSON.stringify(newArr));
     }
 
     window.createTodo = createTodo;
