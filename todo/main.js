@@ -81,8 +81,6 @@
             li.classList.add("item");
         }
 
-
-
         return {
             li,
             text,
@@ -92,26 +90,17 @@
 
     }
 
-
     function createTodo(nameApp, array = [], key) {
-
-        //
         array = JSON.parse(localStorage.getItem(key)) || array;
         localStorage.setItem(key, JSON.stringify(array));
-        //
-
 
         const todo = document.querySelector(".todo");
-
         let title = createAppTitle(nameApp);
         todo.append(title);
-
         let itemForm = createTodoItemForm();
         todo.append(itemForm.divItems);
-
         let ul = createTodoList();
         todo.append(ul);
-
 
         // buttonDone disable
         itemForm.buttonDone.setAttribute("disabled", "disabled");
@@ -122,42 +111,32 @@
             }
         });
 
-
         itemForm.form.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            if (itemForm.input.value != "") {
-                let item = { name: itemForm.input.value, done: false };
-                let list = createTodoElement(item);
+            let item = { name: itemForm.input.value, done: false };
+            let list = createTodoElement(item);
 
-                // local storage array pushing
-                array.push(item);
-                localStorage.setItem(key, JSON.stringify(array));
+            // local storage array pushing
+            array.push(item);
+            localStorage.setItem(key, JSON.stringify(array));
 
+            list.buttonReady.addEventListener("click", () => {
+                list.li.classList.toggle("item");
+                changeLocalStorage(key);
+            });
 
-                list.buttonReady.addEventListener("click", () => {
-                    list.li.classList.toggle("item");
+            list.buttonDel.addEventListener("click", () => {
+                let conf = confirm("Вы действительно хотите удалить эту задачу?");
+                if (conf) {
+                    list.li.remove();
                     changeLocalStorage(key);
-                });
+                }
+            });
+            ul.append(list.li);
 
-                list.buttonDel.addEventListener("click", () => {
-                    let conf = confirm("Вы действительно хотите удалить эту задачу?");
-                    if (conf) {
-                        list.li.remove();
-                        changeLocalStorage(key);
-                    }
-                });
-
-
-                ul.append(list.li);
-
-
-                //ButtonDone enable
-                itemForm.buttonDone.setAttribute("disabled", "disabled");
-            }
-            else {
-                alert("Поле ввода не может быть пустым!");
-            }
+            //ButtonDone enable
+            itemForm.buttonDone.setAttribute("disabled", "disabled");
 
             itemForm.input.value = "";
         });
@@ -186,7 +165,7 @@
         let lis = document.querySelectorAll(".li")
         for (let i = 0; i < lis.length; i++) {
             let p = lis[i].querySelector(".liText");
-            if (lis[i].className == "li item") {
+            if (lis[i].className.includes('item')) {
                 newArr.push({ name: p.innerHTML, done: true });
             }
             else {
@@ -198,5 +177,4 @@
 
     window.createTodo = createTodo;
     window.todoArray = todoArray;
-
 })();
