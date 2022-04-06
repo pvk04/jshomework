@@ -1,3 +1,14 @@
 .appHeader{
     text-align: center;
 }
+
+.appTitle{
+    font-family: paper;
+}
+
+@font-face {
+    font-family: "paper";
+    src: url("/fonts/paper.otf") format("truetype"); 
+    font-style: normal; 
+    font-weight: normal; 
+    } 
