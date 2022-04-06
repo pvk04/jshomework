@@ -6,6 +6,9 @@ let todoArray = [
     { id: 1, name: "Выгулять собаку", done: false }
 ];
 
+let emptyArray = [];
+
 window.todoArray = todoArray;
+window.emptyArray = emptyArray;
 window.createTodo = createTodo;
 })();
