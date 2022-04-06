@@ -1,43 +1,43 @@
 #title{
-    text-align: center;
-  }
-  
-  #createform{
-    margin: auto;
-    width: 75%;
-  }
-  
-  
-  .form{
-    display: flex;
-    height: 46px;
-  }
-  
-  
-  #todoList{
-    list-style-type: none;
-  }
-  
-  .li{
-    margin: auto;
-    width: 75%;
-    border: 1px solid black;
-    border-radius: 5px;
-    margin-bottom: 5px;
-  }
-  
-  .liText{
-    text-align: center;
-    word-break: break-all;
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  
-  nav{
-    background-color: blueviolet;
-  }
+  text-align: center;
+}
 
-  .item{
-    text-decoration: line-through;
-    background-color: rgb(153, 255, 153);
-  }
+#createform{
+  margin: auto;
+  width: 75%;
+}
+
+
+.form{
+  display: flex;
+  height: 46px;
+}
+
+
+#todoList{
+  list-style-type: none;
+}
+
+.li{
+  margin: auto;
+  width: 75%;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.liText{
+  text-align: center;
+  word-break: break-all;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+nav{
+  background-color: blueviolet;
+}
+
+.item{
+  text-decoration: line-through;
+  background-color: rgb(153, 255, 153);
+}

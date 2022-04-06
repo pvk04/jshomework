@@ -9,23 +9,27 @@
     <link rel=" stylesheet " href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js%22%3E"></script>
+    
 </head>
 
 <body>
     <header>
-        <ul>
-            <li>
-                <a href="index.html">Мой список дел </a>
-            </li>
+        <nav>
+            <ul>
+                <li>
+                    <a href="index.html">Мой список дел </a>
+                </li>
 
-            <li>
-                <a href="dad.html">Список дел Папы</a>
-            </li>
-        </ul>
+                <li>
+                    <a href="dad.html">Список дел папы</a>
+                </li>
+            </ul>
+        </nav>
     </header>
     <div class="todo" id="todo" class="todo"></div>
 
     <script src="main.js"></script>
+    <script>document.addEventListener("DOMContentLoaded", createTodo("Мамин список дел",[],"mom"));</script>
 </body>
 
 </html>

@@ -9,6 +9,9 @@
     <link rel=" stylesheet " href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
     <link rel="stylesheet" href="style.css">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js%22%3E"></script> -->
+    <script type="module" src="main.js" defer></script>
+    <script defer>document.addEventListener("DOMContentLoaded", ()=> {createTodo("Мой список дел", todoArray, "my")});
+    </script>
 </head>
 
 <body>
@@ -29,9 +32,8 @@
 
     <div class="todo" id="todo" class="todo"></div>
 
-    <script src="main.js"></script>
-    <script>document.addEventListener("DOMContentLoaded", createTodo("Мой список дел", todoArray, "my"));
-    </script>
+    
+
 </body>
 
 </html>
