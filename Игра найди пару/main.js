@@ -1,10 +1,10 @@
-(function() {
-    const game = document.querySelector(".game")
+(function (){
+    const game = document.querySelector(".game");
 
     function createAppHeader(name) {
         const appHeader = document.createElement("div");
         appHeader.classList.add("appHeader");
-        
+
         const title = document.createElement("h1");
         title.classList.add("appTitle");
         title.textContent = name;
@@ -16,7 +16,7 @@
     function createGameCanvas() {
         const divCanvas = document.createElement("div");
         divCanvas.classList.add("divCanvas");
-        
+
         const divCards = document.createElement("div");
         divCards.classList.add("divCards");
         divCanvas.append(divCards);
@@ -25,67 +25,93 @@
         buttonPlayAgain.classList.add("buttonPlayAgain");
         divCanvas.append(buttonPlayAgain);
 
-
         return {
             divCanvas,
             divCards,
-            buttonPlayAgain
+            buttonPlayAgain,
         };
     }
 
     function createCard() {
-        let card = document.createElement("div");
+        let card = document.createElement("button");
         card.classList.add("card");
 
-        let cardH1 = document.createElement("h1");
-        cardH1.classList.add("cardH1");
-        card.append(cardH1);
+        // let cardH1 = document.createElement("h1");
+        // cardH1.classList.add("cardH1");
+        // card.append(cardH1);
 
-        return {
-            card,
-            cardH1
-        }
+        return card;
     }
 
-    function createGame(){
-        let head = createAppHeader("Найди пару");
+  
+    function CreateGame() {
+        let header = createAppHeader("Found a couple");
+        game.append(header);
         let canvas = createGameCanvas();
-        let cardCount = 4;
-        let numsArray = [1,1,2,2];
+        game.append(canvas.divCanvas);
+
+        let cardValues = createCardValuesArray(16);
+
+        let compareCards = [];
+        for (let i = 0; i < 16; i++){
+            let htmlCard = createCard();
+            htmlCard.id = i;
+            htmlCard.textContent = cardValues[i];
+            canvas.divCards.append(htmlCard);
+            htmlCard.classList.add("cardBack");
 
 
-        // создание карт на странице
-        for (let i = 0; i < cardCount; i++){
+            htmlCard.addEventListener("click", () => {
 
-            let card = createCard();
-            card.cardH1.textContent = numsArray[i];
-            canvas.divCards.append(card.card);
-            card.card.classList.add("cardBack");
-
-            card.card.addEventListener("click", () => {
-                let cardFronts = document.querySelectorAll(".cardFront");
-                if(cardFronts.length < 2){
-                    card.card.classList.toggle("cardFront");
-                    card.cardH1.classList.toggle("cardH1show");
+                if (compareCards.length < 2){
+                    if (compareCards[0] != event.target){
+                        compareCards.push(event.target);
+                    }
+                    htmlCard.classList.toggle("cardFront");
                 }
-                else{
-                    card.card.classList.remove("cardFront");
-                    card.cardH1.classList.remove("cardH1show");
+                else if (compareCards[0].innerHTML == compareCards[1].innerHTML && compareCards[0].id != compareCards[1].id){
+                    compareCards[0].setAttribute('disabled','disabled');
+                    compareCards[1].setAttribute('disabled','disabled');
+                    compareCards = [];
+                    if (compareCards[0] != event.target){
+                        compareCards.push(event.target);
+                    }
+                    htmlCard.classList.toggle("cardFront");
                 }
+                else if (compareCards.length == 2){
+                    compareCards[0].classList.remove("cardFront");
+                    compareCards[1].classList.remove("cardFront");
+                    compareCards = [];
+                    if (compareCards[0] != event.target){
+                        compareCards.push(event.target);
+                    }
+                    htmlCard.classList.toggle("cardFront");
+                }
+                console.log(compareCards)
             });
+
+
         }
-        
+
 
 
         canvas.buttonPlayAgain.textContent = "Играть снова";
-        canvas.buttonPlayAgain.addEventListener("click", () => {
-        
-        });
-
-
-        game.append(head);
-        game.append(canvas.divCanvas);
+        canvas.buttonPlayAgain.addEventListener("click", () => {});
     }
 
-    createGame();
+
+    function createCardValuesArray(cardCount){
+        let array = [];
+        for (let i = 1; i <= cardCount/2; i++){
+            
+            array.push(i);
+            array.push(i);
+        }
+
+        array.sort(() => Math.random() - 0.5);
+
+        return array;
+    }
+
+    CreateGame();
 })();

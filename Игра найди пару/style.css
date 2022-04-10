@@ -1,4 +1,4 @@
-.appHeader{
+.appHeader {
     margin-left: auto;
     margin-right: auto;
     border: 1px solid black;
@@ -7,13 +7,12 @@
 
 }
 
-.appTitle{
+.appTitle {
     text-align: center;
-    font-family: paper;
     color: blue;
 }
 
-.divCanvas{
+.divCanvas {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -22,7 +21,7 @@
     flex-direction: column;
 }
 
-.buttonPlayAgain{
+.buttonPlayAgain {
     background-color: chartreuse;
     width: 8%;
     height: 10%;
@@ -31,46 +30,34 @@
     height: fit-content;
 }
 
-.divCards{
-    margin-left: auto;
+.divCards {
+    /* margin-left: auto;
     margin-right: auto;
     width: fit-content;
     height: fit-content;
-    display: flex;
+    display: flex; */
+    display: grid;
+    height: max-content;
+    background-color: rgb(66, 66, 66);
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid rgb(27, 27, 27);
+    border-radius: 5px;
 }
 
-.card{
+.card {
     width: 100px;
     height: 150px;
     border: 1px solid black;
     border-radius: 5px;
-    margin: 1%;
+    margin: auto;
 }
 
-.cardBack{
+.cardBack {
     background-color: rgb(240, 126, 149);
     font-size: 0px;
 }
 
-.cardFront{
+.cardFront {
     background-color: white;
-}
-
-.cardH1{
-    font-size: 0;
-    text-align: center;
-    font-family: paper;
-    color: blue;
-}
-
-.cardH1show{
     font-size: 20px;
 }
-
-
-@font-face {
-    font-family: "paper";
-    src: url("/fonts/paper.otf") format("truetype"); 
-    font-style: normal; 
-    font-weight: normal; 
-    } 
