@@ -21,12 +21,19 @@
     flex-direction: column;
 }
 
+.divGroup{
+    display: block;
+    margin: auto;
+}
+
 .cardOptions{
     display: flex;
     margin: auto;
 }
 
-
+.playButton{
+    margin: auto;
+}
 
 .descriptionP{
     margin: auto;
@@ -71,4 +78,8 @@
 .cardFront {
     background-color: white;
     font-size: 20px;
+}
+
+.hide{
+    display: none;
 }

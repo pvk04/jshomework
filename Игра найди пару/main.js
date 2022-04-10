@@ -32,6 +32,9 @@
 
     
     function createCardCount(){
+        let divGroup = document.createElement("div");
+        divGroup.classList.add("divGroup");
+
         let divOptions = document.createElement("div");
         divOptions.classList.add("cardOptions");
         
@@ -53,13 +56,19 @@
         let playButton = document.createElement("button");
         playButton.classList.add("playButton");
 
+
+        divGroup.append(divOptions);
+        divGroup.append(descriptionP);
+        divGroup.append(playButton);
+
         return {
             divOptions,
             cardsCount,
             buttonMinus,
             buttonPlus,
             descriptionP,
-            playButton
+            playButton,
+            divGroup
         }
     }
 
@@ -81,8 +90,6 @@
 
         let cardCountOpt = createCardCount();
         
-        
-        cardCountOpt.descriptionP.after(canvas.divCards)
 
         // Card Count Options
         cardCountOpt.cardsCount.textContent = 16;
@@ -103,15 +110,18 @@
             }
         });
 
-
-        canvas.divCanvas.append(cardCountOpt.divOptions);
-        canvas.divCanvas.append(cardCountOpt.descriptionP);
-        canvas.divCanvas.append(cardCountOpt.playButton);
+        canvas.divCanvas.append(cardCountOpt.divGroup);
         canvas.divCanvas.append(canvas.divCards);
+        canvas.divCards.classList.add("hide");
         canvas.divCanvas.append(canvas.buttonPlayAgain);
+        canvas.buttonPlayAgain.classList.add("hide");
         
 
         cardCountOpt.playButton.addEventListener("click", () => {
+            cardCountOpt.divGroup.classList.add("hide");
+
+            canvas.divCards.classList.remove("hide");
+
             let cardValues = createCardValuesArray(Number(cardCountOpt.cardsCount.textContent));
 
             let compareCards = [];
@@ -143,9 +153,12 @@
                     }
                 });
             }
+            canvas.buttonPlayAgain.classList.remove("hide");
+            canvas.buttonPlayAgain.textContent = "Играть снова";
+                canvas.buttonPlayAgain.addEventListener("click", () => {
+                location.reload();
+            });
         });
-        // canvas.buttonPlayAgain.textContent = "Играть снова";
-        // canvas.buttonPlayAgain.addEventListener("click", () => {});
     }
 
 
