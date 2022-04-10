@@ -19,11 +19,9 @@
 
         const divCards = document.createElement("div");
         divCards.classList.add("divCards");
-        divCanvas.append(divCards);
 
         const buttonPlayAgain = document.createElement("button");
         buttonPlayAgain.classList.add("buttonPlayAgain");
-        divCanvas.append(buttonPlayAgain);
 
         return {
             divCanvas,
@@ -32,13 +30,43 @@
         };
     }
 
+    
+    function createCardCount(){
+        let divOptions = document.createElement("div");
+        divOptions.classList.add("cardOptions");
+        
+        let buttonMinus = document.createElement("button");
+        buttonMinus.classList.add("buttonMinus");
+        divOptions.append(buttonMinus);
+        
+        let cardsCount = document.createElement("h1");
+        cardsCount.classList.add("cardCount");
+        divOptions.append(cardsCount);
+
+        let buttonPlus = document.createElement("button");
+        buttonPlus.classList.add("buttonPlus");
+        divOptions.append(buttonPlus);
+
+        let descriptionP = document.createElement("p");
+        descriptionP.classList.add("descriptionP");
+
+        let playButton = document.createElement("button");
+        playButton.classList.add("playButton");
+
+        return {
+            divOptions,
+            cardsCount,
+            buttonMinus,
+            buttonPlus,
+            descriptionP,
+            playButton
+        }
+    }
+
+
     function createCard() {
         let card = document.createElement("button");
         card.classList.add("card");
-
-        // let cardH1 = document.createElement("h1");
-        // cardH1.classList.add("cardH1");
-        // card.append(cardH1);
 
         return card;
     }
@@ -47,56 +75,77 @@
     function CreateGame() {
         let header = createAppHeader("Found a couple");
         game.append(header);
+
         let canvas = createGameCanvas();
         game.append(canvas.divCanvas);
 
-        let cardValues = createCardValuesArray(16);
+        let cardCountOpt = createCardCount();
+        
+        
+        cardCountOpt.descriptionP.after(canvas.divCards)
 
-        let compareCards = [];
-        for (let i = 0; i < 16; i++){
-            let htmlCard = createCard();
-            htmlCard.id = i;
-            htmlCard.textContent = cardValues[i];
-            canvas.divCards.append(htmlCard);
-            htmlCard.classList.add("cardBack");
+        // Card Count Options
+        cardCountOpt.cardsCount.textContent = 16;
+        cardCountOpt.descriptionP.textContent = "min: 8; max: 16";
+        cardCountOpt.playButton.textContent = "PLAY!";
+
+        cardCountOpt.buttonMinus.textContent = "-2";
+        cardCountOpt.buttonMinus.addEventListener("click", ()=> {
+            if (parseInt(cardCountOpt.cardsCount.innerHTML) > 8){
+                cardCountOpt.cardsCount.textContent = parseInt(cardCountOpt.cardsCount.innerHTML) - 2;
+            }
+        });
+
+        cardCountOpt.buttonPlus.textContent = "+2";
+        cardCountOpt.buttonPlus.addEventListener("click", ()=> {
+            if (parseInt(cardCountOpt.cardsCount.innerHTML) < 16){
+                cardCountOpt.cardsCount.textContent = parseInt(cardCountOpt.cardsCount.innerHTML) + 2;
+            }
+        });
 
 
-            htmlCard.addEventListener("click", () => {
+        canvas.divCanvas.append(cardCountOpt.divOptions);
+        canvas.divCanvas.append(cardCountOpt.descriptionP);
+        canvas.divCanvas.append(cardCountOpt.playButton);
+        canvas.divCanvas.append(canvas.divCards);
+        canvas.divCanvas.append(canvas.buttonPlayAgain);
+        
 
-                if (compareCards.length < 2){
-                    if (compareCards[0] != event.target){
-                        compareCards.push(event.target);
+        cardCountOpt.playButton.addEventListener("click", () => {
+            let cardValues = createCardValuesArray(Number(cardCountOpt.cardsCount.textContent));
+
+            let compareCards = [];
+            for (let i = 0; i < Number(cardCountOpt.cardsCount.textContent); i++){
+                let htmlCard = createCard();
+                htmlCard.id = i;
+                htmlCard.textContent = cardValues[i];
+                canvas.divCards.append(htmlCard);
+                htmlCard.classList.add("cardBack");
+
+
+                htmlCard.addEventListener("click", () => {
+
+                    if (compareCards.length <  2){
+                        if (compareCards[0] != event.target){
+                            compareCards.push(event.target);
+                        }
+                        htmlCard.classList.toggle("cardFront");
                     }
-                    htmlCard.classList.toggle("cardFront");
-                }
-                else if (compareCards[0].innerHTML == compareCards[1].innerHTML && compareCards[0].id != compareCards[1].id){
-                    compareCards[0].setAttribute('disabled','disabled');
-                    compareCards[1].setAttribute('disabled','disabled');
-                    compareCards = [];
-                    if (compareCards[0] != event.target){
-                        compareCards.push(event.target);
+                    else if (compareCards[0].innerHTML == compareCards[1].innerHTML && compareCards[0].id != compareCards[1].id){
+                        compareCards[0].setAttribute('disabled','disabled');
+                        compareCards[1].setAttribute('disabled','disabled');
+                        compareCards = [];
                     }
-                    htmlCard.classList.toggle("cardFront");
-                }
-                else if (compareCards.length == 2){
-                    compareCards[0].classList.remove("cardFront");
-                    compareCards[1].classList.remove("cardFront");
-                    compareCards = [];
-                    if (compareCards[0] != event.target){
-                        compareCards.push(event.target);
+                    else if (compareCards.length == 2){
+                        compareCards[0].classList.remove("cardFront");
+                        compareCards[1].classList.remove("cardFront");
+                        compareCards = [];
                     }
-                    htmlCard.classList.toggle("cardFront");
-                }
-                console.log(compareCards)
-            });
-
-
-        }
-
-
-
-        canvas.buttonPlayAgain.textContent = "Играть снова";
-        canvas.buttonPlayAgain.addEventListener("click", () => {});
+                });
+            }
+        });
+        // canvas.buttonPlayAgain.textContent = "Играть снова";
+        // canvas.buttonPlayAgain.addEventListener("click", () => {});
     }
 
 
