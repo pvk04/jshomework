@@ -1,6 +1,7 @@
 (function (){
     const game = document.querySelector(".game");
 
+
     function createAppHeader(name) {
         const appHeader = document.createElement("div");
         appHeader.classList.add("appHeader");
@@ -12,6 +13,7 @@
 
         return appHeader;
     }
+
 
     function createGameCanvas() {
         const divCanvas = document.createElement("div");
@@ -82,12 +84,11 @@
 
   
     function CreateGame() {
-        let header = createAppHeader("Found a couple");
+        // Creating and position elements
+        let header = createAppHeader("Find a couple");
         game.append(header);
-
         let canvas = createGameCanvas();
         game.append(canvas.divCanvas);
-
         let cardCountOpt = createCardCount();
         
 
@@ -110,25 +111,24 @@
             }
         });
 
+        // Canvas append elements
         canvas.divCanvas.append(cardCountOpt.divGroup);
         canvas.divCanvas.append(canvas.divCards);
         canvas.divCards.classList.add("hide");
         canvas.divCanvas.append(canvas.buttonPlayAgain);
         canvas.buttonPlayAgain.classList.add("hide");
         
-
+        // Play button
         cardCountOpt.playButton.addEventListener("click", () => {
             cardCountOpt.divGroup.classList.add("hide");
-
             canvas.divCards.classList.remove("hide");
 
             let cardCountH1 = Number(cardCountOpt.cardsCount.textContent);
-
             let cardValues = createCardValuesArray(cardCountH1);
-
             let trueCount = 0;
-
             let compareCards = [];
+
+            // Card generation
             for (let i = 0; i < cardCountH1; i++){
                 let htmlCard = createCard();
                 htmlCard.id = i;
@@ -136,9 +136,10 @@
                 canvas.divCards.append(htmlCard);
                 htmlCard.classList.add("cardBack");
 
-
+                // Card event
                 htmlCard.addEventListener("click", () => {
 
+                    // Card copmare check
                     if (compareCards.length <  2){
                         if (compareCards[0] != event.target){
                             compareCards.push(event.target);
@@ -157,6 +158,7 @@
                         compareCards = [];
                     }
 
+                    // Play Again button
                     if (trueCount == cardCountH1/2 ){
                         alert("Вы выиграл!");
                         canvas.buttonPlayAgain.classList.remove("hide");
@@ -182,7 +184,6 @@
     function createCardValuesArray(cardCount){
         let array = [];
         for (let i = 1; i <= cardCount/2; i++){
-            
             array.push(i);
             array.push(i);
         }
