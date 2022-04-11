@@ -122,10 +122,14 @@
 
             canvas.divCards.classList.remove("hide");
 
-            let cardValues = createCardValuesArray(Number(cardCountOpt.cardsCount.textContent));
+            let cardCountH1 = Number(cardCountOpt.cardsCount.textContent);
+
+            let cardValues = createCardValuesArray(cardCountH1);
+
+            let trueCount = 0;
 
             let compareCards = [];
-            for (let i = 0; i < Number(cardCountOpt.cardsCount.textContent); i++){
+            for (let i = 0; i < cardCountH1; i++){
                 let htmlCard = createCard();
                 htmlCard.id = i;
                 htmlCard.textContent = cardValues[i];
@@ -142,6 +146,7 @@
                         htmlCard.classList.toggle("cardFront");
                     }
                     else if (compareCards[0].innerHTML == compareCards[1].innerHTML && compareCards[0].id != compareCards[1].id){
+                        trueCount++;
                         compareCards[0].setAttribute('disabled','disabled');
                         compareCards[1].setAttribute('disabled','disabled');
                         compareCards = [];
@@ -151,13 +156,25 @@
                         compareCards[1].classList.remove("cardFront");
                         compareCards = [];
                     }
+
+                    if (trueCount == cardCountH1/2 ){
+                        alert("Вы выиграл!");
+                        canvas.buttonPlayAgain.classList.remove("hide");
+                        canvas.buttonPlayAgain.textContent = "Играть снова";
+                        canvas.buttonPlayAgain.addEventListener("click", () => {
+                            let cards = document.querySelectorAll(".card");
+                            let cardValues = createCardValuesArray(cardCountH1);
+                            trueCount = 0;
+                            for (let i = 0; i < cards.length; i++){
+                                cards[i].removeAttribute("disabled");
+                                cards[i].textContent = cardValues[i];
+                                cards[i].className = "card cardBack";
+                                canvas.buttonPlayAgain.classList.add("hide");
+                            }
+                        });  
+                    }
                 });
             }
-            canvas.buttonPlayAgain.classList.remove("hide");
-            canvas.buttonPlayAgain.textContent = "Играть снова";
-                canvas.buttonPlayAgain.addEventListener("click", () => {
-                location.reload();
-            });
         });
     }
 
@@ -174,6 +191,7 @@
 
         return array;
     }
+    
 
     CreateGame();
 })();
