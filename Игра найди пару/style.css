@@ -1,14 +1,22 @@
+body {
+    background: url(/resourses/bodybackground.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
 .appHeader {
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid black;
-    border-radius: 5px;
     width: 80%;
 }
 
 .appTitle {
+    font-family: Lhf;
+    margin: 0px;
     text-align: center;
-    color: blue;
+    font-size: 50px;
+    color: rgba(255, 81, 0, 0.76);
+    text-shadow: 1px 1px 2px red, 0 0 1em rgba(255, 0, 0, 0.582), 0 0 0.2em rgba(0, 0, 255, 0.486);
 }
 
 .divCanvas {
@@ -18,29 +26,50 @@
     margin-top: 5px;
     display: flex;
     flex-direction: column;
-    
+
 }
 
-.divGroup{
+.divGroup {
     display: block;
     margin: auto;
+    width: max-content;
+    justify-content: center;
 }
 
-.cardOptions{
-    display: flex;
-    margin: auto;
+.cardOptions {
+    vertical-align: middle;
+    margin-top: 10px;
+    display: flex;;
+    font-family: Lhf;
+    color: rgba(255, 81, 0, 0.76);
+    text-shadow: 1px 1px 2px red,
+    0 0 1em rgba(255, 0, 0, 0.582),
+    0 0 0.2em rgba(0, 0, 255, 0.486);
+    justify-content: center;
 }
 
-.playButton{
-    margin: auto;
+.playButton {
+    font-family: Lhf;
+    text-align: center;
+    background-color: rgba(128, 255, 0, 0.925);
+    font-size: 200%;
+    width: 300px;
+    height: 90px;
+    border-radius: 5px;
 }
 
-.descriptionP{
-    margin: auto;
+.descriptionP {
+    text-align: center;
+    font-family: Lhf;
+    color: rgba(255, 81, 0, 0.76);
+    text-shadow: 1px 1px 2px red,
+    0 0 1em rgba(255, 0, 0, 0.582),
+    0 0 0.2em rgba(0, 0, 255, 0.486);
 }
 
 .buttonPlayAgain {
-    background-color: chartreuse;
+    background-color: rgba(128, 255, 0, 0.925);
+    font-family: Lhf;
     font-size: 200%;
     width: 300px;
     height: 90px;
@@ -48,22 +77,44 @@
     border-radius: 5px;
 }
 
+.buttonMinus{
+    background-color: rgba(128, 255, 0, 0.925);
+    font-family: Lhf;
+    font-size: 200%;
+    width: 90px;
+    height: 65px;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.buttonPlus{
+    background-color: rgba(128, 255, 0, 0.925);
+    font-family: Lhf;
+    font-size: 200%;
+    width: 90px;
+    height: 65px;
+    margin: auto;
+    border-radius: 5px;
+}
+
 .divCards {
     display: grid;
-    height: max-content;
+    height: 836px;
     background-color: rgb(66, 66, 66);
-    grid-template-columns: repeat(4, 1fr);
-    border: 1px solid rgb(27, 27, 27);
-    border-radius: 5px;
-    margin-bottom: 20px;
+    grid-template-columns: 170px 170px 170px 170px 170px 170px 170px 170px;
+    gap: 5px;
+    margin-bottom: 5px;
     background: url(/resourses/cardscanvasbackground.jpg);
     background-position: center;
     background-size: 100%;
+    justify-content: center;
+    grid-row: auto;
+    background-repeat: no-repeat;
 }
 
 .card {
     width: 170px;
-    height: 216px;
+    height: 260px;
     border-radius: 5px;
     margin: auto;
 }
@@ -79,8 +130,24 @@
     background: none;
     background-color: white;
     font-size: 50px;
+    font-family: Lhf;
 }
 
-.hide{
+
+.cardCount{
+    margin: 0 10px;
+    font-size: 100px;
+}
+
+
+.hide {
     display: none;
+}
+
+
+@font-face {
+    font-family: "Lhf";
+    src: url(/font/LHF_Uncial_Caps.ttf) format("truetype");
+    font-style: normal;
+    font-weight: normal;
 }

@@ -94,17 +94,17 @@
 
         // Card Count Options
         cardCountOpt.cardsCount.textContent = 16;
-        cardCountOpt.descriptionP.textContent = "min: 8; max: 16";
-        cardCountOpt.playButton.textContent = "PLAY!";
+        cardCountOpt.descriptionP.textContent = "min: 8  max: 16";
+        cardCountOpt.playButton.textContent = "PLAY";
 
-        cardCountOpt.buttonMinus.textContent = "-2";
+        cardCountOpt.buttonMinus.textContent = "-";
         cardCountOpt.buttonMinus.addEventListener("click", ()=> {
             if (parseInt(cardCountOpt.cardsCount.innerHTML) > 8){
                 cardCountOpt.cardsCount.textContent = parseInt(cardCountOpt.cardsCount.innerHTML) - 2;
             }
         });
 
-        cardCountOpt.buttonPlus.textContent = "+2";
+        cardCountOpt.buttonPlus.textContent = "+";
         cardCountOpt.buttonPlus.addEventListener("click", ()=> {
             if (parseInt(cardCountOpt.cardsCount.innerHTML) < 16){
                 cardCountOpt.cardsCount.textContent = parseInt(cardCountOpt.cardsCount.innerHTML) + 2;
