@@ -138,31 +138,48 @@
 
                 // Card event
                 htmlCard.addEventListener("click", () => {
+                    let cards = document.querySelectorAll(".card");
+                    let cardsBack = document.querySelectorAll(".cardBack");
 
                     // Card copmare check
-                    if (compareCards.length <  2){
-                        if (compareCards[0] != event.target){
-                            compareCards.push(event.target);
+                    htmlCard.classList.add("cardFront");
+
+                    if (event.target != compareCards[0]){
+                        compareCards.push(htmlCard);
+                    }
+
+                    if (compareCards.length == 2){
+                        for (card of cards){
+                            card.setAttribute("disabled", "disabled");
                         }
-                        htmlCard.classList.toggle("cardFront");
+                        if (compareCards[0].innerHTML == compareCards[1].innerHTML){
+                            compareCards[0].setAttribute("disabled", "disabled");
+                            compareCards[1].setAttribute("disabled", "disabled");
+
+                            compareCards[0].classList.remove("cardBack");
+                            compareCards[1].classList.remove("cardBack");
+                            
+                            compareCards = [];
+                            trueCount++;
+                            
+                            console.log(cardsBack);
+                        } 
+                        else {
+                            setTimeout(() => {
+                                compareCards[0].classList.remove("cardFront");
+                                compareCards[1].classList.remove("cardFront");
+                                compareCards = [];
+                                
+                            }, 1000);
+                        }
                     }
-                    else if (compareCards[0].innerHTML == compareCards[1].innerHTML && compareCards[0].id != compareCards[1].id){
-                        trueCount++;
-                        compareCards[0].setAttribute('disabled','disabled');
-                        compareCards[1].setAttribute('disabled','disabled');
-                        compareCards = [];
-                    }
-                    else if (compareCards.length == 2){
-                        compareCards[0].classList.remove("cardFront");
-                        compareCards[1].classList.remove("cardFront");
-                        compareCards = [];
-                    }
+                    console.log(compareCards);
 
                     // Play Again button
                     if (trueCount == cardCountH1/2 ){
-                        alert("Вы выиграл!");
+                        alert("You won!");
                         canvas.buttonPlayAgain.classList.remove("hide");
-                        canvas.buttonPlayAgain.textContent = "Играть снова";
+                        canvas.buttonPlayAgain.textContent = "Play again";
                         canvas.buttonPlayAgain.addEventListener("click", () => {
                             let cards = document.querySelectorAll(".card");
                             let cardValues = createCardValuesArray(cardCountH1);
