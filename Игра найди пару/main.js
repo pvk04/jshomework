@@ -139,7 +139,6 @@
                 // Card event
                 htmlCard.addEventListener("click", () => {
                     let cards = document.querySelectorAll(".card");
-                    let cardsBack = document.querySelectorAll(".cardBack");
 
                     // Card copmare check
                     htmlCard.classList.add("cardFront");
@@ -158,26 +157,34 @@
 
                             compareCards[0].classList.remove("cardBack");
                             compareCards[1].classList.remove("cardBack");
+
+                            let cardsBack = document.querySelectorAll(".cardBack");
+                            for (card of cardsBack){
+                                card.removeAttribute("disabled");
+                            }
                             
                             compareCards = [];
                             trueCount++;
-                            
-                            console.log(cardsBack);
                         } 
                         else {
                             setTimeout(() => {
                                 compareCards[0].classList.remove("cardFront");
                                 compareCards[1].classList.remove("cardFront");
                                 compareCards = [];
+
+                                let cardsBack = document.querySelectorAll(".cardBack");
+                                for (card of cardsBack){
+                                    card.removeAttribute("disabled");
+                                }
                                 
                             }, 1000);
                         }
                     }
-                    console.log(compareCards);
 
                     // Play Again button
                     if (trueCount == cardCountH1/2 ){
-                        alert("You won!");
+                        setTimeout(() => {alert("You won!");}, 100);
+                        
                         canvas.buttonPlayAgain.classList.remove("hide");
                         canvas.buttonPlayAgain.textContent = "Play again";
                         canvas.buttonPlayAgain.addEventListener("click", () => {
