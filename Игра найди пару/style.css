@@ -1,6 +1,6 @@
 body {
     background: url(/resourses/bodybackground.jpg);
-    background-size: 100%;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 
@@ -58,6 +58,15 @@ body {
     border-radius: 5px;
 }
 
+.timer{
+    text-align: center;
+    font-family: Lhf;
+    color: rgba(255, 81, 0, 0.76);
+    text-shadow: 1px 1px 2px red,
+    0 0 1em rgba(255, 0, 0, 0.582),
+    0 0 0.2em rgba(0, 0, 255, 0.486); 
+}
+
 .descriptionP {
     text-align: center;
     font-family: Lhf;
@@ -102,11 +111,11 @@ body {
     height: 836px;
     background-color: rgb(66, 66, 66);
     grid-template-columns: 170px 170px 170px 170px 170px 170px 170px 170px;
-    gap: 5px;
+    gap: 2px;
     margin-bottom: 5px;
     background: url(/resourses/cardscanvasbackground.jpg);
     background-position: center;
-    background-size: 100%;
+    background-size: contain;
     justify-content: center;
     grid-row: auto;
     background-repeat: no-repeat;

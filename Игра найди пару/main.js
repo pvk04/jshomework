@@ -82,6 +82,14 @@
         return card;
     }
 
+
+    function createTimer(){
+        let timer = document.createElement("h1");
+        timer.classList.add("timer");
+
+        return timer;
+    }
+
   
     function CreateGame() {
         // Creating and position elements
@@ -90,6 +98,8 @@
         let canvas = createGameCanvas();
         game.append(canvas.divCanvas);
         let cardCountOpt = createCardCount();
+        let timer = createTimer();
+        timer.classList.add("hide");
         
 
         // Card Count Options
@@ -113,6 +123,7 @@
 
         // Canvas append elements
         canvas.divCanvas.append(cardCountOpt.divGroup);
+        canvas.divCanvas.append(timer);
         canvas.divCanvas.append(canvas.divCards);
         canvas.divCards.classList.add("hide");
         canvas.divCanvas.append(canvas.buttonPlayAgain);
@@ -120,13 +131,33 @@
         
         // Play button
         cardCountOpt.playButton.addEventListener("click", () => {
+
+            let check = false;
+
             cardCountOpt.divGroup.classList.add("hide");
             canvas.divCards.classList.remove("hide");
+            timer.classList.remove("hide");
 
+            let timerValue = 60;
+            timer.textContent = `time left: ${timerValue}`;
+            
             let cardCountH1 = Number(cardCountOpt.cardsCount.textContent);
             let cardValues = createCardValuesArray(cardCountH1);
             let trueCount = 0;
             let compareCards = [];
+
+            // Timer
+            let interval = setInterval(() => {
+                timerValue -= 1;
+                timer.textContent = `time left: ${timerValue}`;
+            }, 1000);
+
+            let timeout = setTimeout(() => {
+                check = 1;
+                clearInterval(interval);
+                alert("Time is over");
+                disableAll(); 
+            }, 60 * 1000);
 
             // Card generation
             for (let i = 0; i < cardCountH1; i++){
@@ -139,6 +170,8 @@
                 // Card event
                 htmlCard.addEventListener("click", () => {
                     let cards = document.querySelectorAll(".card");
+
+                    
 
                     // Card copmare check
                     htmlCard.classList.add("cardFront");
@@ -181,23 +214,46 @@
                         }
                     }
 
+                    canvas.buttonPlayAgain.textContent = "Play again";
+                    canvas.buttonPlayAgain.addEventListener("click", () => {
+                        let cards = document.querySelectorAll(".card");
+                        let cardValues = createCardValuesArray(cardCountH1);
+                        trueCount = 0;
+                        check = false;
+                        timerValue = 60;  
+                        for (let i = 0; i < cards.length; i++){
+                            cards[i].removeAttribute("disabled");
+                            cards[i].textContent = cardValues[i];
+                            cards[i].className = "card cardBack";
+                            canvas.buttonPlayAgain.classList.add("hide");
+                            clearInterval(interval);
+                            clearTimeout(timeout);      
+                            //timer
+                            interval = setInterval(() => {
+                                timerValue -= 1;
+                                timer.textContent = `time left: ${timerValue}`;
+                            }, 1000);
+                
+                            setTimeout(() => {
+                                check = true;
+                                clearInterval(interval);
+                                alert("Time is over");
+                                disableAll(); 
+                            }, 60 * 1000);
+                        }
+                    });
+
                     // Play Again button
                     if (trueCount == cardCountH1/2 ){
                         setTimeout(() => {alert("You won!");}, 100);
-                        
+                        clearInterval(interval);
+                        clearTimeout(timeout);
                         canvas.buttonPlayAgain.classList.remove("hide");
-                        canvas.buttonPlayAgain.textContent = "Play again";
-                        canvas.buttonPlayAgain.addEventListener("click", () => {
-                            let cards = document.querySelectorAll(".card");
-                            let cardValues = createCardValuesArray(cardCountH1);
-                            trueCount = 0;
-                            for (let i = 0; i < cards.length; i++){
-                                cards[i].removeAttribute("disabled");
-                                cards[i].textContent = cardValues[i];
-                                cards[i].className = "card cardBack";
-                                canvas.buttonPlayAgain.classList.add("hide");
-                            }
-                        });  
+                    }
+                    else if (check){
+                        clearInterval(interval);
+                        clearTimeout(timeout);
+                        canvas.buttonPlayAgain.classList.remove("hide");
                     }
                 });
             }
@@ -215,6 +271,13 @@
         array.sort(() => Math.random() - 0.5);
 
         return array;
+    }
+
+    function disableAll(){
+        let cards = document.querySelectorAll(".card");
+        for (card of cards){
+            card.setAttribute("disabled", "disabled");
+        }
     }
     
 
