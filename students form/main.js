@@ -59,6 +59,8 @@
   }
 
   function studentForm() {
+    // добавить local storage и доделать кнопку 
+
     let div = document.querySelector(".addForm");
 
     let title = createTitle("Добавление студента");
@@ -80,24 +82,36 @@
 
     let button = createButton("addBtn");
     button.addEventListener("click", () => {
+
       let check = true;
-        let inputs = document.querySelectorAll(".inp");
-        let birthDate = document.querySelectorAll("#birthDate");
-        let 
-        for (input of inputs){
-          if (input.value == ""){
-            alert("Все поля должны быть заполнены!");
-            check = false;
-            break;
-          }
-          
-        }
+      let inputs = document.querySelectorAll(".inp");
+      let birthDate = document.querySelector("#birthDate");
+      let startYear = document.querySelector("#startYear");
+
+      for (input of inputs){
+        if (input.value.trim() == ""){
+          alert("Все поля должны быть заполнены!");
+          check = false;
+          break;
+        }          
+      }
+      if (new Date(birthDate.value) < new Date("01.01.1900")){
+        alert("Такую дату ввести нельзя!");
+        check = false;
+      }
+      if (startYear.value < 2000){
+        alert("Неккоректная дата начала обучения!");
+        check = false;
+      }
+
+      if (check){
+        // Добавление записи в локал сторадж
+      }
+
     });
 
     button.textContent = "Добавить";
     div.append(button);
-
-
   }
 
   // for (let i = 0; i<array.length; i++){
