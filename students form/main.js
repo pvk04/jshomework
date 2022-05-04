@@ -58,8 +58,9 @@
     return button;
   }
 
-  function studentForm() {
-    // добавить local storage и доделать кнопку 
+  function studentForm(array = [], key) {
+    array = JSON.parse(localStorage.getItem(key)) || array;
+    localStorage.setItem(key, JSON.stringify(array));
 
     let div = document.querySelector(".addForm");
 
@@ -72,7 +73,27 @@
     for (let key in array[0]){
       let p = document.createElement("p");
       p.classList.add("inpName");
-      p.textContent = key;
+      
+      switch(key){
+        case "name":
+            p.textContent = "Имя";
+            break
+        case "surname":
+            p.textContent = "Фамилия";
+            break
+        case "lastname":
+            p.textContent = "Отчество";
+            break
+        case "birthDate":
+            p.textContent = "Дата рождения";
+            break
+        case "startYear":
+            p.textContent = "Дата начала обучения";
+            break
+        case "faculty":
+            p.textContent = "Факультет";
+            break
+      }
       form.append(p);
 
       let input = createInput();
@@ -105,7 +126,19 @@
       }
 
       if (check){
-        // Добавление записи в локал сторадж
+        array.push({
+            name: inputs[0].value,
+            surname: inputs[1].value,
+            lastname: inputs[2].value,
+            birthDate: new Date(inputs[3].value),
+            startYear: inputs[4].value,
+            faculty: inputs[5].value
+        });
+        localStorage.setItem(key, JSON.stringify(array));
+
+        inputs.forEach(element => {
+            element.value = "";
+        });
       }
 
     });
@@ -120,7 +153,12 @@
   //   }
   // }
 
+  function showStudents(array, key){
+
+  }
 
 
-  studentForm();
+  window.studentForm = studentForm;
+  window.arr = array;
+  window.showStud = showStudents;
 })();
