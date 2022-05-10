@@ -5,7 +5,7 @@
       name: "Алексей",
       surname: "Громов",
       lastname: "Викторович",
-      birthDate: new Date('2004-06-23'),
+      birthDate: new Date('2004-01-23'),
       startYear: 2020,
       faculty: "Программист"
     },
@@ -58,6 +58,36 @@
     return button;
   }
 
+  function createTable(){
+    let table = document.createElement("table");
+    table.classList.add("studTable");
+
+    return table;
+  }
+
+  function calcAge(arrElem){
+    let bitrhObj = new Date(arrElem.birthDate);
+    let today = new Date();
+    let currentBirth = new Date(today.getFullYear(), bitrhObj.getMonth(), bitrhObj.getDay());
+    let date;
+    if (String(bitrhObj.getMonth() + 1).length == 2){
+      date = bitrhObj.getDate() + "." + Number(bitrhObj.getMonth()+ 1) + "." + bitrhObj.getFullYear();
+    }
+    else if (String(bitrhObj.getMonth() + 1).length == 1) {
+      date = bitrhObj.getDate() + "." + "0" + Number(bitrhObj.getMonth()+ 1) + "." + bitrhObj.getFullYear();
+    }
+
+    let age = today.getFullYear() - bitrhObj.getFullYear();
+    if (today<currentBirth){
+      age-=1;
+    }
+
+    return {
+      age,
+      date
+    }
+  }
+
   function studentForm(array = [], key) {
     array = JSON.parse(localStorage.getItem(key)) || array;
     localStorage.setItem(key, JSON.stringify(array));
@@ -88,7 +118,7 @@
             p.textContent = "Дата рождения";
             break
         case "startYear":
-            p.textContent = "Дата начала обучения";
+            p.textContent = "Год начала обучения";
             break
         case "faculty":
             p.textContent = "Факультет";
@@ -101,12 +131,14 @@
       form.append(input);
     }
 
+    let birthDate = document.querySelector("#birthDate");
+    birthDate.setAttribute("type", "date");
+
     let button = createButton("addBtn");
     button.addEventListener("click", () => {
 
       let check = true;
       let inputs = document.querySelectorAll(".inp");
-      let birthDate = document.querySelector("#birthDate");
       let startYear = document.querySelector("#startYear");
 
       for (input of inputs){
@@ -116,12 +148,12 @@
           break;
         }          
       }
-      if (new Date(birthDate.value) < new Date("01.01.1900")){
-        alert("Такую дату ввести нельзя!");
+      if (new Date(birthDate.value) < new Date("01.01.1900") || new Date(birthDate.value) > new Date()){
+        alert("Такую дату рождения ввести нельзя!");
         check = false;
       }
       if (startYear.value < 2000){
-        alert("Неккоректная дата начала обучения!");
+        alert("Неккоректный год начала обучения!");
         check = false;
       }
 
@@ -139,6 +171,8 @@
         inputs.forEach(element => {
             element.value = "";
         });
+
+        alert("Студент успешно добавлен");
       }
 
     });
@@ -147,14 +181,61 @@
     div.append(button);
   }
 
-  // for (let i = 0; i<array.length; i++){
-  //   for(key in array[i]){
-  //     console.log(array[i][key]);
-  //   }
-  // }
+  function showStudents(array = [], key){
+    array = JSON.parse(localStorage.getItem(key)) || array;
+    localStorage.setItem(key, JSON.stringify(array));
 
-  function showStudents(array, key){
+    let main = document.querySelector(".students");
 
+    let table =createTable();
+    main.append(table);
+
+    let tr = document.createElement("tr");
+      tr.id = `0id`;
+      table.append(tr);
+
+      let tdFio = document.createElement("td");
+      tdFio.textContent = "ФИО";
+      tr.append(tdFio);
+
+      let tdFaculty = document.createElement("td");
+      tdFaculty.textContent = "Факультет";
+      tr.append(tdFaculty);
+
+      let tdBirth = document.createElement("td");
+      tdBirth.textContent = "ДР и возраст";
+      tr.append(tdBirth);
+
+      let tdYears = document.createElement("td");
+      tdYears.textContent = "Годы обучения";
+      tr.append(tdYears);
+
+    for (let i = 0; i < array.length; i++){
+      let tr = document.createElement("tr");
+      tr.id = `${i+1}id`;
+      table.append(tr);
+
+      let tdFio = document.createElement("td");
+      tdFio.textContent = array[i].surname + " " + array[i].name + " " + array[i].lastname;
+      tr.append(tdFio);
+
+      let tdFaculty = document.createElement("td");
+      tdFaculty.textContent = array[i].faculty;
+      tr.append(tdFaculty);
+
+      let tdBirth = document.createElement("td");
+      let age = calcAge(array[i]);
+      tdBirth.textContent = age.date + ` (${age.age})`;
+      tr.append(tdBirth);
+
+      let tdYears = document.createElement("td");
+      let endYear = Number(array[i].startYear) + 4;
+      tdYears.textContent = `${array[i].startYear}-${endYear}`;
+      if (new Date(endYear, 9, 1) < new Date()){
+        tdYears.textContent = `${array[i].startYear}-${endYear} (закончил)`;
+      }
+      tr.append(tdYears);
+    }
   }
 
 
