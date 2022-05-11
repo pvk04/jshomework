@@ -97,7 +97,7 @@
     let title = createTitle("Добавление студента");
     div.append(title);
 
-    let form = createForm("addForm");
+    let form = createForm("form");
     div.append(form);
 
     for (let key in array[0]){
@@ -107,21 +107,27 @@
       switch(key){
         case "name":
             p.textContent = "Имя";
+            p.id = "nameP";
             break
         case "surname":
             p.textContent = "Фамилия";
+            p.id = "surnameP";
             break
         case "lastname":
             p.textContent = "Отчество";
+            p.id = "lastnameP";
             break
         case "birthDate":
             p.textContent = "Дата рождения";
+            p.id = "birthDateP";
             break
         case "startYear":
             p.textContent = "Год начала обучения";
+            p.id = "startYearP";
             break
         case "faculty":
             p.textContent = "Факультет";
+            p.id = "faculityP";
             break
       }
       form.append(p);
@@ -135,28 +141,29 @@
     birthDate.setAttribute("type", "date");
 
     let button = createButton("addBtn");
+    button.classList.add("btn");
     button.addEventListener("click", () => {
-
+      
       let check = true;
       let inputs = document.querySelectorAll(".inp");
+      let inpNames = document.querySelectorAll(".inpName");
       let startYear = document.querySelector("#startYear");
 
-      for (input of inputs){
-        if (input.value.trim() == ""){
-          alert("Все поля должны быть заполнены!");
+      for (let i = 0; i < inputs.length; i++){
+        if (inputs[i].value.trim() == ""){
+          // alert("Все поля должны быть заполнены!");
+          inpNames[i].textContent = `${inpNames[i].innerHTML} \n*поле должно быть заполенно`;
           check = false;
-          break;
         }          
+        else if (new Date(birthDate.value) < new Date("01.01.1900") || new Date(birthDate.value) > new Date()){
+          alert("Такую дату рождения ввести нельзя!");
+          check = false;
+        }
+        else if (startYear.value < 2000 || isNaN(startYear.value)) {
+          alert("Неккоректный год начала обучения!");
+          check = false;
+        }
       }
-      if (new Date(birthDate.value) < new Date("01.01.1900") || new Date(birthDate.value) > new Date()){
-        alert("Такую дату рождения ввести нельзя!");
-        check = false;
-      }
-      if (startYear.value < 2000){
-        alert("Неккоректный год начала обучения!");
-        check = false;
-      }
-
       if (check){
         array.push({
             name: inputs[0].value,
@@ -191,7 +198,7 @@
     main.append(table);
 
     let tr = document.createElement("tr");
-      tr.id = `0id`;
+      tr.id = `tr0`;
       table.append(tr);
 
       let tdFio = document.createElement("td");
@@ -212,7 +219,7 @@
 
     for (let i = 0; i < array.length; i++){
       let tr = document.createElement("tr");
-      tr.id = `${i+1}id`;
+      tr.id = `tr${i+1}`;
       table.append(tr);
 
       let tdFio = document.createElement("td");
