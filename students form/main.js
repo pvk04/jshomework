@@ -27,6 +27,10 @@
     }
   ];
 
+  let fioSortCheck = 0;
+  let facultySortCheck = 0;
+  let birthSortCheck = 0;
+  let yearSortCheck = 0;
 
   function createTitle(name) {
       let title = document.createElement("H1");
@@ -210,33 +214,81 @@
     div.append(button);
   }
 
-  function showStudents(array = [], key){
+  // function showStudents(arr = [], key){
+  //   array = JSON.parse(localStorage.getItem(key)) || arr;
+  //   localStorage.setItem(key, JSON.stringify(array));
+  //   createTableStud(array)
+  // }
+
+  function createTableStud(array = [], key){
     array = JSON.parse(localStorage.getItem(key)) || array;
     localStorage.setItem(key, JSON.stringify(array));
 
     let main = document.querySelector(".students");
 
+    // filters
+    let inputFio = createInput();
+    inputFio.addEventListener("input", () => {filterByFio(key, inputFio.value)});
+
+
+    // table
     let table =createTable();
     main.append(table);
 
     let tr = document.createElement("tr");
       tr.id = `tr0`;
       table.append(tr);
-
+      
       let tdFio = document.createElement("td");
       tdFio.textContent = "ФИО";
+      let fioSort = document.createElement("button");
+      fioSort.addEventListener("click", () => {sortByFio(key); main.removeChild(document.querySelector(".studTable"))});
+      if(fioSortCheck == 0){
+        fioSort.classList = "sortUp";
+      }
+      else{
+        fioSort.classList = "sortDown";
+      }
+      tdFio.append(fioSort);
       tr.append(tdFio);
 
       let tdFaculty = document.createElement("td");
       tdFaculty.textContent = "Факультет";
+      let facultySort = document.createElement("button");
+      facultySort.addEventListener("click", () => {sortByFaculity(key); main.removeChild(document.querySelector(".studTable"))});
+      if(facultySortCheck == 0){
+        facultySort.classList = "sortUp";
+      }
+      else{
+        facultySort.classList = "sortDown";
+      }
+      tdFaculty.append(facultySort);
       tr.append(tdFaculty);
 
       let tdBirth = document.createElement("td");
       tdBirth.textContent = "ДР и возраст";
+      let birthSort = document.createElement("button");
+      birthSort.addEventListener("click", () => {sortByBirth(key); main.removeChild(document.querySelector(".studTable"))});
+      if(birthSortCheck == 0){
+        birthSort.classList = "sortUp";
+      }
+      else{
+        birthSort.classList = "sortDown";
+      }
+      tdBirth.append(birthSort);
       tr.append(tdBirth);
 
       let tdYears = document.createElement("td");
       tdYears.textContent = "Годы обучения";
+      let yearSort = document.createElement("button");
+      yearSort.addEventListener("click", () => {sortByYear(key); main.removeChild(document.querySelector(".studTable"))});
+      if(yearSortCheck == 0){
+        yearSort.classList = "sortUp";
+      }
+      else{
+        yearSort.classList = "sortDown";
+      }
+      tdYears.append(yearSort);
       tr.append(tdYears);
 
     for (let i = 0; i < array.length; i++){
@@ -267,8 +319,129 @@
     }
   }
 
+  function sortByFio(key){
+    array = JSON.parse(localStorage.getItem(key));
+    if (fioSortCheck == 0){
+      fioSortCheck += 1;
+      array.sort((a,b) => {
+        let frstFio = a.surname + " " + a.name + " " + a.lastname;
+        let scndFio = b.surname + " " + b.name + " " + b.lastname;
+        
+        
+        if (frstFio > scndFio){
+          return 1
+        }
+        if(frstFio < scndFio){
+          return -1
+        }
+        return 0
+      });
+    }
+    else{
+      fioSortCheck = 0;
+      array.sort((a,b) => {
+        let frstFio = a.surname + " " + a.name + " " + a.lastname;
+        let scndFio = b.surname + " " + b.name + " " + b.lastname;
+        
+        
+        if (frstFio < scndFio){
+          return 1
+        }
+        if(frstFio > scndFio){
+          return -1
+        }
+        return 0
+      });
+    }
+
+    localStorage.setItem(key, JSON.stringify(array));
+    createTableStud(array, key);
+  }
+
+  function sortByFaculity(key){
+    array = JSON.parse(localStorage.getItem(key));
+    if (facultySortCheck == 0){
+      facultySortCheck += 1;
+      array.sort((a,b) => {
+        if (a.faculty > b.faculty){
+          return 1
+        }
+        if (a.faculty < b.faculty){
+          return -1
+        }
+        return 0
+      });
+    }
+    else{
+      facultySortCheck = 0;
+      array.sort((a,b) => {
+        if (a.faculty < b.faculty){
+          return 1
+        }
+        if (a.faculty > b.faculty){
+          return -1
+        }
+        return 0
+      });
+    }
+    localStorage.setItem(key, JSON.stringify(array));
+    createTableStud(array, key);
+  }
+
+  function sortByBirth(key){
+    array = JSON.parse(localStorage.getItem(key));
+    if (birthSortCheck == 0){
+      birthSortCheck += 1;
+      array.sort((a,b) => {
+        if (a.birthDate > b.birthDate){
+          return 1
+        }
+        if (a.birthDate < b.birthDate){
+          return -1
+        }
+        return 0
+      });
+    }
+    else{
+      birthSortCheck = 0;
+      array.sort((a,b) => {
+        if (a.birthDate < b.birthDate){
+          return 1
+        }
+        if (a.birthDate > b.birthDate){
+          return -1
+        }
+        return 0
+      });
+    }
+    localStorage.setItem(key, JSON.stringify(array));
+    createTableStud(array, key);
+  }
+
+  function sortByYear(key){
+    array = JSON.parse(localStorage.getItem(key));
+    if (yearSortCheck == 0){
+      yearSortCheck += 1;
+      array.sort((a,b) => {
+        return a.startYear - b.startYear
+      });
+    }
+    else{
+      yearSortCheck = 0;
+      array.sort((a,b) => {
+        return b.startYear - a.startYear
+      });
+    }
+    localStorage.setItem(key, JSON.stringify(array));
+    createTableStud(array, key);
+  }
+
+  function filterByFio(key, value){
+    
+  }
+
 
   window.studentForm = studentForm;
   window.arr = array;
-  window.showStud = showStudents;
+  window.createTableStud = createTableStud;
 })();

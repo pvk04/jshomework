@@ -15,6 +15,20 @@ td {
     margin-left: 5%;
 }
 
-/* #tr0{
-    
-} */
+.sortUp {
+    background: url("/src/arrow_up.png") no-repeat;
+    background-position: center;
+    background-size: 100%;
+    width: 20px;
+    height: 20px;
+    margin-left: 10%;
+}
+
+.sortDown {
+    background: url("/src/arrow_down.png") no-repeat;
+    background-position: center;
+    background-size: 100%;
+    width: 20px;
+    height: 20px;
+    margin-left: 10%;
+}
