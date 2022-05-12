@@ -169,25 +169,38 @@
       let inputs = document.querySelectorAll(".formInp");
       let today = new Date()
       let startYear = document.querySelector("#startYear");
-      let errCount = 0;
 
       for (let i = 0; i < inputs.length; i++){
 
-        // поправить валидацию
         if (inputs[i].value.trim() == ""){
           errMsgs[i].textContent = "*заполните поле";
 
           check = false;
         }          
-        else if (new Date(birthDate.value) < new Date("01.01.1900") || new Date(birthDate.value) > new Date() && errCount == 0){
+        else if (new Date(birthDate.value) < new Date("01.01.1900") || new Date(birthDate.value) > new Date()){
           document.getElementById("birthDateErr").textContent = "*Введите корректную дату рождения";
-          errCount += 1;
           check = false;
         }
         else if (startYear.value < 2000 || isNaN(startYear.value) || startYear.value > today.getFullYear()) {
           document.getElementById("startYearErr").textContent = "*Введите корректную дату начала обучения";
           check = false;
         }
+      }
+      if (!isNaN(inputs[0].value)){
+        document.getElementById("nameErr").textContent = "Введите корректную информацию"
+        check = false
+      }
+      if (!isNaN(inputs[1].value)){
+        document.getElementById("surnameErr").textContent = "Введите корректную информацию"
+        check = false
+      }
+      if (!isNaN(inputs[2].value)){
+        document.getElementById("lastnameErr").textContent = "Введите корректную информацию"
+        check = false
+      }
+      if (!isNaN(inputs[5].value)){
+        document.getElementById("faculityErr").textContent = "Введите корректную информацию"
+        check = false
       }
 
       if (check){
@@ -214,22 +227,39 @@
     div.append(button);
   }
 
-  // function showStudents(arr = [], key){
-  //   array = JSON.parse(localStorage.getItem(key)) || arr;
-  //   localStorage.setItem(key, JSON.stringify(array));
-  //   createTableStud(array)
-  // }
-
-  function createTableStud(array = [], key){
-    array = JSON.parse(localStorage.getItem(key)) || array;
+  function showStudents(arr = [], key){
+    array = JSON.parse(localStorage.getItem(key)) || arr;
     localStorage.setItem(key, JSON.stringify(array));
 
     let main = document.querySelector(".students");
 
-    // filters
+    // filtration
     let inputFio = createInput();
-    inputFio.addEventListener("input", () => {filterByFio(key, inputFio.value)});
+    inputFio.placeholder = "Введите фамилию, имя или отчество";
+    inputFio.addEventListener("input", () => {filterByFio(array, inputFio.value); main.removeChild(document.querySelector(".studTable"))});
+    main.append(inputFio);
 
+    let inputFac = createInput();
+    inputFac.placeholder = "Введите факультет";
+    inputFac.addEventListener("input", () => {filterByFac(array, inputFac.value); main.removeChild(document.querySelector(".studTable"))});
+    main.append(inputFac);
+
+    let inputStart = createInput();
+    inputStart.placeholder = "Введите год начала обучения";
+    inputStart.addEventListener("input", () => {filterByStart(array, inputStart.value); main.removeChild(document.querySelector(".studTable"))});
+    main.append(inputStart);
+
+    let inputEnd = createInput();
+    inputEnd.placeholder = "Введите год конца обучения";
+    inputEnd.addEventListener("input", () => {filterByEnd(array, inputEnd.value)});
+    main.append(inputEnd);
+
+
+    createTableStud(array);
+  }
+
+  function createTableStud(array = []){
+    let main = document.querySelector(".students");
 
     // table
     let table =createTable();
@@ -242,7 +272,7 @@
       let tdFio = document.createElement("td");
       tdFio.textContent = "ФИО";
       let fioSort = document.createElement("button");
-      fioSort.addEventListener("click", () => {sortByFio(key); main.removeChild(document.querySelector(".studTable"))});
+      fioSort.addEventListener("click", () => {sortByFio(array); main.removeChild(document.querySelector(".studTable"))});
       if(fioSortCheck == 0){
         fioSort.classList = "sortUp";
       }
@@ -255,7 +285,7 @@
       let tdFaculty = document.createElement("td");
       tdFaculty.textContent = "Факультет";
       let facultySort = document.createElement("button");
-      facultySort.addEventListener("click", () => {sortByFaculity(key); main.removeChild(document.querySelector(".studTable"))});
+      facultySort.addEventListener("click", () => {sortByFaculity(array); main.removeChild(document.querySelector(".studTable"))});
       if(facultySortCheck == 0){
         facultySort.classList = "sortUp";
       }
@@ -268,7 +298,7 @@
       let tdBirth = document.createElement("td");
       tdBirth.textContent = "ДР и возраст";
       let birthSort = document.createElement("button");
-      birthSort.addEventListener("click", () => {sortByBirth(key); main.removeChild(document.querySelector(".studTable"))});
+      birthSort.addEventListener("click", () => {sortByBirth(array); main.removeChild(document.querySelector(".studTable"))});
       if(birthSortCheck == 0){
         birthSort.classList = "sortUp";
       }
@@ -281,7 +311,7 @@
       let tdYears = document.createElement("td");
       tdYears.textContent = "Годы обучения";
       let yearSort = document.createElement("button");
-      yearSort.addEventListener("click", () => {sortByYear(key); main.removeChild(document.querySelector(".studTable"))});
+      yearSort.addEventListener("click", () => {sortByYear(array); main.removeChild(document.querySelector(".studTable"))});
       if(yearSortCheck == 0){
         yearSort.classList = "sortUp";
       }
@@ -319,8 +349,7 @@
     }
   }
 
-  function sortByFio(key){
-    array = JSON.parse(localStorage.getItem(key));
+  function sortByFio(array){
     if (fioSortCheck == 0){
       fioSortCheck += 1;
       array.sort((a,b) => {
@@ -353,13 +382,10 @@
         return 0
       });
     }
-
-    localStorage.setItem(key, JSON.stringify(array));
-    createTableStud(array, key);
+    createTableStud(array);
   }
 
-  function sortByFaculity(key){
-    array = JSON.parse(localStorage.getItem(key));
+  function sortByFaculity(array){
     if (facultySortCheck == 0){
       facultySortCheck += 1;
       array.sort((a,b) => {
@@ -384,12 +410,11 @@
         return 0
       });
     }
-    localStorage.setItem(key, JSON.stringify(array));
-    createTableStud(array, key);
+    createTableStud(array);
   }
 
-  function sortByBirth(key){
-    array = JSON.parse(localStorage.getItem(key));
+  function sortByBirth(array){
+
     if (birthSortCheck == 0){
       birthSortCheck += 1;
       array.sort((a,b) => {
@@ -414,12 +439,10 @@
         return 0
       });
     }
-    localStorage.setItem(key, JSON.stringify(array));
-    createTableStud(array, key);
+    createTableStud(array);
   }
 
-  function sortByYear(key){
-    array = JSON.parse(localStorage.getItem(key));
+  function sortByYear(array){
     if (yearSortCheck == 0){
       yearSortCheck += 1;
       array.sort((a,b) => {
@@ -432,16 +455,53 @@
         return b.startYear - a.startYear
       });
     }
-    localStorage.setItem(key, JSON.stringify(array));
-    createTableStud(array, key);
+    createTableStud(array);
   }
 
-  function filterByFio(key, value){
-    
+  function filterByFio(array, value){
+    let res = array.filter((el) => {
+      let str = el.surname + " " + el.name + " " + el.lastname;
+      return str.toLowerCase().includes(value.trim().toLowerCase())
+    });
+    createTableStud(res);
+  }
+
+  function filterByFac(array, value){
+    let res = array.filter((el) => {
+      return el.faculty.toLowerCase().includes(value.trim().toLowerCase())
+    });
+    createTableStud(res);
+  }
+
+  function filterByStart(array, value){
+    let main = document.querySelector(".students");
+    let res = array.filter((el) => {
+      return el.startYear  == value.trim();
+    });
+    createTableStud(res);
+
+    if (value == ""){
+      main.removeChild(document.querySelector(".studTable"))
+      createTableStud(array);
+    }
+  }
+
+  function filterByEnd(array, value){
+    let main = document.querySelector(".students");
+    main.removeChild(document.querySelector(".studTable"))
+    let res = array.filter((el) => {
+      return Number(el.startYear) + 4 == value.trim();
+    });
+    createTableStud(res);
+
+    if (value == ""){
+      main.removeChild(document.querySelector(".studTable"));
+      createTableStud(array);
+    }
   }
 
 
   window.studentForm = studentForm;
   window.arr = array;
-  window.createTableStud = createTableStud;
+  window.createTableStud = showStudents;
 })();
