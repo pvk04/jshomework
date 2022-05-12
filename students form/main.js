@@ -46,7 +46,7 @@
 
   function createInput() {
     let input = document.createElement("input");
-    input.classList.add("inp");
+    input.classList.add("formInp");
 
     return input;
   }
@@ -103,31 +103,40 @@
     for (let key in array[0]){
       let p = document.createElement("p");
       p.classList.add("inpName");
-      
+
+      let err = document.createElement("p");
+      err.classList.add("errMsg");
+
       switch(key){
         case "name":
             p.textContent = "Имя";
             p.id = "nameP";
+            err.id = "nameErr";
             break
         case "surname":
             p.textContent = "Фамилия";
             p.id = "surnameP";
+            err.id = "surnameErr";
             break
         case "lastname":
             p.textContent = "Отчество";
             p.id = "lastnameP";
+            err.id = "lastnameErr";
             break
         case "birthDate":
             p.textContent = "Дата рождения";
             p.id = "birthDateP";
+            err.id = "birthDateErr";
             break
         case "startYear":
             p.textContent = "Год начала обучения";
             p.id = "startYearP";
+            err.id = "startYearErr";
             break
         case "faculty":
             p.textContent = "Факультет";
             p.id = "faculityP";
+            err.id = "faculityErr";
             break
       }
       form.append(p);
@@ -135,6 +144,9 @@
       let input = createInput();
       input.id = key;
       form.append(input);
+
+      
+      form.append(err);
     }
 
     let birthDate = document.querySelector("#birthDate");
@@ -143,27 +155,37 @@
     let button = createButton("addBtn");
     button.classList.add("btn");
     button.addEventListener("click", () => {
+
+      let errMsgs = document.querySelectorAll(".errMsg");
+      errMsgs.forEach(element => {
+        element.textContent = "";
+      });
       
       let check = true;
-      let inputs = document.querySelectorAll(".inp");
-      let inpNames = document.querySelectorAll(".inpName");
+      let inputs = document.querySelectorAll(".formInp");
+      let today = new Date()
       let startYear = document.querySelector("#startYear");
+      let errCount = 0;
 
       for (let i = 0; i < inputs.length; i++){
+
+        // поправить валидацию
         if (inputs[i].value.trim() == ""){
-          // alert("Все поля должны быть заполнены!");
-          inpNames[i].textContent = `${inpNames[i].innerHTML} \n*поле должно быть заполенно`;
+          errMsgs[i].textContent = "*заполните поле";
+
           check = false;
         }          
-        else if (new Date(birthDate.value) < new Date("01.01.1900") || new Date(birthDate.value) > new Date()){
-          alert("Такую дату рождения ввести нельзя!");
+        else if (new Date(birthDate.value) < new Date("01.01.1900") || new Date(birthDate.value) > new Date() && errCount == 0){
+          document.getElementById("birthDateErr").textContent = "*Введите корректную дату рождения";
+          errCount += 1;
           check = false;
         }
-        else if (startYear.value < 2000 || isNaN(startYear.value)) {
-          alert("Неккоректный год начала обучения!");
+        else if (startYear.value < 2000 || isNaN(startYear.value) || startYear.value > today.getFullYear()) {
+          document.getElementById("startYearErr").textContent = "*Введите корректную дату начала обучения";
           check = false;
         }
       }
+
       if (check){
         array.push({
             name: inputs[0].value,

@@ -1,19 +1,39 @@
-.showStud{
+.showStud {
     margin-left: 5%;
     margin-right: 5%;
 }
 
-.addForm{
+.addForm {
     margin-top: 1%;
     margin-right: 5%;
     margin-left: 5%;
 }
 
-.form{
+.form {
     margin-top: 2%;
     margin-bottom: 2%;
 }
 
-.addBtn{
+.addBtn {
     background-color: rgb(81, 146, 250);
+}
+
+.inpErr {
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid red;
+}
+
+.errMsg {
+    font-size: small;
+    color: red;
+    margin: 0;
+}
+
+.formInp {
+    margin-bottom: 0;
+}
+
+.inpName {
+    margin-bottom: 0;
 }

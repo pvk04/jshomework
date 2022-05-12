@@ -1,13 +1,15 @@
-.addStud{
+.addStud {
     margin-right: 5%;
     margin-left: 5%;
 }
 
-table, th, td{
+table,
+th,
+td {
     border: 1px solid black;
 }
 
-.studTable{
+.studTable {
     width: 90%;
     margin-top: 1%;
     margin-left: 5%;
