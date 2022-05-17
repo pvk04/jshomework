@@ -3,11 +3,16 @@ import { createTodoItemForm } from "./createTodoItemForm.js";
 import { createTodoList } from "./createTodoList.js";
 import { createTodoElement } from "./createTodoElement.js";
 import { changeLocalStorage } from "./changeLocalStorage.js";
+import { serverArr } from "./server.js";
 
+export async function createTodo(nameApp, array = [], key) {
+    // array = JSON.parse(localStorage.getItem(key)) || array;
+    // localStorage.setItem(key, JSON.stringify(array));
 
-export function createTodo(nameApp, array = [], key) {
-    array = JSON.parse(localStorage.getItem(key)) || array;
-    localStorage.setItem(key, JSON.stringify(array));
+    // Server
+    array = await serverArr();
+    console.dir(array);
+    
 
     const todo = document.querySelector(".todo");
     let title = createAppTitle(nameApp);

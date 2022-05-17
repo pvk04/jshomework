@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>TODO</title>
+    <meta charset="UTF-8">
+    <script>
+
+        async function getComments(id = ""){
+            const response = await fetch(`http://localhost:3000/api/todos/${id}`);
+            const data = await response.json();
+            console.log(data);
+        }
+
+        async function postComments(_name, _owner, bool){
+            const response = await fetch('http://localhost:3000/api/todos', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: _name,
+                    owner: _owner,
+                    done: bool
+                })
+            });
+        }
+
+        async function deleteComments(id){
+            const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
+                method: 'DELETE'
+            });
+        }
+
+        async function patchComments(id, object){
+            const response = await fetch(`http://localhost:3000/api/todos/${id}`,{
+                method: 'PATCH',
+                body: JSON.stringify(object)
+            })
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
