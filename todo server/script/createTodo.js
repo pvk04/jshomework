@@ -2,16 +2,17 @@ import { createAppTitle } from "./createAppTitle.js";
 import { createTodoItemForm } from "./createTodoItemForm.js";
 import { createTodoList } from "./createTodoList.js";
 import { createTodoElement } from "./createTodoElement.js";
-import { changeLocalStorage } from "./changeLocalStorage.js";
 import { serverArr } from "./server.js";
 import { serverPost } from "./serverPost.js";
+import { serverPatch } from "./serverPatch.js";
+import { serverDelete } from "./serverDelete.js";
 
 export async function createTodo(nameApp, array = [], key) {
-    // array = JSON.parse(localStorage.getItem(key)) || array;
-    // localStorage.setItem(key, JSON.stringify(array));
-
     // Server
     array = await serverArr(key);
+    let ids = array.ids;
+    console.log(ids)
+    array = array.res;
     console.dir(array);
     
 
@@ -38,24 +39,17 @@ export async function createTodo(nameApp, array = [], key) {
         let item = { name: itemForm.input.value, done: false };
         let list = createTodoElement(item);
 
-        // local storage array pushing
-        // array.push(item);
-        // localStorage.setItem(key, JSON.stringify(array));
-
         // Server POST
         serverPost(item, key);
 
-
         list.buttonReady.addEventListener("click", () => {
             list.li.classList.toggle("item");
-            changeLocalStorage(key);
         });
 
         list.buttonDel.addEventListener("click", () => {
             let conf = confirm("Вы действительно хотите удалить эту задачу?");
             if (conf) {
                 list.li.remove();
-                changeLocalStorage(key);
             }
         });
         ul.append(list.li);
@@ -70,15 +64,21 @@ export async function createTodo(nameApp, array = [], key) {
     for (let i = 0; i < array.length; i++) {
         let elem = createTodoElement(array[i]);
 
-        elem.buttonReady.addEventListener("click", () => {
+        elem.buttonReady.addEventListener("click", (e) => {
             elem.li.classList.toggle("item");
-            changeLocalStorage(key);
+
+            if (e.target.closest("li").classList.contains("item")){
+                serverPatch(ids[i], true);
+            }
+            else{
+                serverPatch(ids[i], false);
+            }
         });
         elem.buttonDel.addEventListener("click", () => {
             let conf = confirm("Вы действительно хотите удалить эту задачу?");
             if (conf) {
                 elem.li.remove();
-                changeLocalStorage(key);
+                serverDelete(ids[i]);
             }
         });
         ul.append(elem.li);
