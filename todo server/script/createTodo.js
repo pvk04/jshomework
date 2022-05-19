@@ -7,13 +7,11 @@ import { serverPost } from "./serverPost.js";
 import { serverPatch } from "./serverPatch.js";
 import { serverDelete } from "./serverDelete.js";
 
-export async function createTodo(nameApp, array = [], key) {
+export async function createTodo(nameApp, key) {
     // Server
-    array = await serverArr(key);
+    let array = await serverArr(key);
     let ids = array.ids;
-    console.log(ids)
     array = array.res;
-    console.dir(array);
     
 
     const todo = document.querySelector(".todo");
